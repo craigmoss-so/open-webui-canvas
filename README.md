@@ -197,6 +197,116 @@ If you want to try out the latest bleeding-edge features and are okay with occas
 docker run -d -p 3000:8080 -v open-webui:/app/backend/data --name open-webui --add-host=host.docker.internal:host-gateway --restart always ghcr.io/open-webui/open-webui:dev
 ```
 
+### Testing the Canvas Feature with Docker 🎨
+
+> [!NOTE]
+> This section is for testing the **Canvas feature** which adds visual node-based workflows with Google Agent-to-Agent (A2A) protocol support. The Canvas feature allows you to create multi-agent workflows where different LLMs can work together in a visual canvas interface.
+
+#### Option 1: Build and Run from This Repository
+
+If you want to test the Canvas feature by building the Docker image locally:
+
+**Step 1: Clone this repository**
+```bash
+git clone https://github.com/craigmoss-so/open-webui-canvas.git
+cd open-webui-canvas
+```
+
+**Step 2: Checkout the Canvas feature branch**
+```bash
+git checkout claude/sidebar-navigation-options-011CV4qgCzvXHfLtkzb5KGc1
+```
+
+**Step 3: Build the Docker image**
+```bash
+docker build -t open-webui-canvas:latest .
+```
+
+**Step 4: Run the container**
+
+- **If Ollama is on your computer**:
+  ```bash
+  docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui-canvas --restart always open-webui-canvas:latest
+  ```
+
+- **If Ollama is on a different server**:
+  ```bash
+  docker run -d -p 3000:8080 -e OLLAMA_BASE_URL=https://example.com -v open-webui:/app/backend/data --name open-webui-canvas --restart always open-webui-canvas:latest
+  ```
+
+- **With GPU support**:
+  ```bash
+  docker run -d -p 3000:8080 --gpus all --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui-canvas --restart always open-webui-canvas:latest
+  ```
+
+**Step 5: Access Open WebUI with Canvas**
+
+After running the container, access the application at [http://localhost:3000](http://localhost:3000). You'll find the new **Canvas** option in the sidebar navigation.
+
+#### Option 2: Quick Development Setup (without Docker)
+
+For rapid testing without Docker:
+
+**Step 1: Prerequisites**
+- Node.js 18+ and npm
+- Python 3.11+
+
+**Step 2: Clone and setup**
+```bash
+git clone https://github.com/craigmoss-so/open-webui-canvas.git
+cd open-webui-canvas
+git checkout claude/sidebar-navigation-options-011CV4qgCzvXHfLtkzb5KGc1
+```
+
+**Step 3: Install dependencies**
+```bash
+# Backend
+cd backend
+pip install -r requirements.txt
+
+# Frontend (in a new terminal)
+cd ../
+npm install
+```
+
+**Step 4: Run the application**
+```bash
+# Backend (in one terminal)
+cd backend
+sh start.sh
+
+# Frontend (in another terminal)
+npm run dev
+```
+
+Access at [http://localhost:5173](http://localhost:5173)
+
+#### Using the Canvas Feature
+
+Once running, you can:
+
+1. **Navigate to Canvas** - Click the Canvas icon in the sidebar
+2. **Create Agent Nodes** - Click "+ Agent Node" to add AI processing nodes
+3. **Assign Different Models** - Each node can use a different LLM model
+4. **Connect Nodes** - Draw connections between nodes to route data
+5. **Add Output Node** - Create an output node to display final results
+6. **Execute Workflow** - Enter your prompt and watch the multi-agent workflow execute
+
+The Canvas feature uses Google's Agent-to-Agent (A2A) protocol for node-to-node communication, allowing you to create complex AI workflows with different models working together.
+
+#### Stopping and Removing the Container
+
+```bash
+# Stop the container
+docker stop open-webui-canvas
+
+# Remove the container
+docker rm open-webui-canvas
+
+# Remove the image (optional)
+docker rmi open-webui-canvas:latest
+```
+
 ### Offline Mode
 
 If you are running Open WebUI in an offline environment, you can set the `HF_HUB_OFFLINE` environment variable to `1` to prevent attempts to download models from the internet.
