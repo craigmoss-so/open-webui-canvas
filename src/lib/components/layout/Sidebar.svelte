@@ -61,6 +61,7 @@
 	import Sidebar from '../icons/Sidebar.svelte';
 	import PinnedModelList from './Sidebar/PinnedModelList.svelte';
 	import Note from '../icons/Note.svelte';
+	import Canvas from '../icons/Canvas.svelte';
 	import { slide } from 'svelte/transition';
 	import HotkeyHint from '../common/HotkeyHint.svelte';
 
@@ -677,6 +678,28 @@
 						</Tooltip>
 					</div>
 				{/if}
+
+				<div class="">
+					<Tooltip content={$i18n.t('Canvas')} placement="right">
+						<a
+							class=" cursor-pointer flex rounded-xl hover:bg-gray-100 dark:hover:bg-gray-850 transition group"
+							href="/canvas"
+							on:click={async (e) => {
+								e.stopImmediatePropagation();
+								e.preventDefault();
+
+								goto('/canvas');
+								itemClickHandler();
+							}}
+							draggable="false"
+							aria-label={$i18n.t('Canvas')}
+						>
+							<div class=" self-center flex items-center justify-center size-9">
+								<Canvas className="size-4.5" strokeWidth="2" />
+							</div>
+						</a>
+					</Tooltip>
+				</div>
 			</div>
 		</button>
 
@@ -888,6 +911,25 @@
 							</a>
 						</div>
 					{/if}
+
+					<div class="px-[7px] flex justify-center text-gray-800 dark:text-gray-200">
+						<a
+							id="sidebar-canvas-button"
+							class="grow flex items-center space-x-3 rounded-2xl px-2.5 py-2 hover:bg-gray-100 dark:hover:bg-gray-900 transition"
+							href="/canvas"
+							on:click={itemClickHandler}
+							draggable="false"
+							aria-label={$i18n.t('Canvas')}
+						>
+							<div class="self-center">
+								<Canvas className="size-4.5" strokeWidth="2" />
+							</div>
+
+							<div class="flex self-center translate-y-[0.5px]">
+								<div class=" self-center text-sm font-primary">{$i18n.t('Canvas')}</div>
+							</div>
+						</a>
+					</div>
 				</div>
 
 				{#if ($models ?? []).length > 0 && ($settings?.pinnedModels ?? []).length > 0}

@@ -88,6 +88,12 @@ export const artifactContents = writable(null);
 
 export const embed = writable(null);
 
+// Canvas stores
+export const canvasNodes = writable([]);
+export const canvasConnections = writable([]);
+export const canvasExecuting = writable(false);
+export const canvasOutput = writable(null);
+
 export const temporaryChatEnabled = writable(false);
 export const scrollPaginationEnabled = writable(false);
 export const currentChatPage = writable(1);
